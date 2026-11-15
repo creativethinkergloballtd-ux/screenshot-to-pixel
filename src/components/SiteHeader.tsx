@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router";
 import { LogOut } from "lucide-react";
 
 import { BrandMark } from "@/components/BrandMark";

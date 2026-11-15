@@ -1,27 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Radar } from "lucide-react";
 
 import { FadeIn } from "@/components/FadeIn";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
-export const Route = createFileRoute("/_authenticated/app")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard — Flight Price Notifier" },
-      { name: "description", content: "Your Flight Price Notifier dashboard." },
-      { property: "og:title", content: "Dashboard — Flight Price Notifier" },
-      { property: "og:description", content: "Your Flight Price Notifier dashboard." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: AppDashboard,
-});
+import { useAuthenticatedUser } from "./route";
 
-function AppDashboard() {
-  const { user } = Route.useRouteContext();
+export function AppDashboard() {
+  usePageMeta({
+    title: "Dashboard — Flight Price Notifier",
+    description: "Your Flight Price Notifier dashboard.",
+    twitterCard: "summary",
+    robots: "noindex",
+  });
+
+  const user = useAuthenticatedUser();
 
   return (
     <div className="flex min-h-screen flex-col">

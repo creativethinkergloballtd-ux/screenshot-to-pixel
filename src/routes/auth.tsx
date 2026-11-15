@@ -1,22 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { AuthCard } from "@/components/AuthCard";
 
-export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Sign in — Flight Price Notifier" },
-      { name: "description", content: "Sign in to Flight Price Notifier to manage your fare alerts from Taipei." },
-      { property: "og:title", content: "Sign in — Flight Price Notifier" },
-      { property: "og:description", content: "Sign in to manage your Taipei fare alerts." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: SignInPage,
-});
+export function SignInPage() {
+  usePageMeta({
+    title: "Sign in — Flight Price Notifier",
+    description: "Sign in to Flight Price Notifier to manage your fare alerts from Taipei.",
+    ogDescription: "Sign in to manage your Taipei fare alerts.",
+    twitterCard: "summary",
+  });
 
-function SignInPage() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-16">
       <div className="pointer-events-none absolute inset-0 bg-hero-glow" />

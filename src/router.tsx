@@ -1,18 +1,30 @@
-import { QueryClient } from "@tanstack/react-query";
-import { createRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
+import { createBrowserRouter, type RouteObject } from "react-router";
 
-export const getRouter = () => {
-  // One client per request: a module-level QueryClient leaks cached data between SSR requests.
-  const queryClient = new QueryClient();
+import { NotFound, RootErrorBoundary, RootLayout } from "./routes/__root";
+import { AppDashboard } from "./routes/_authenticated/app";
+import { AUTHENTICATED_ROUTE_ID, AuthenticatedLayout, requireUser } from "./routes/_authenticated/route";
+import { SignInPage } from "./routes/auth";
+import { Landing } from "./routes/index";
+import { SignUpPage } from "./routes/signup";
 
-  const router = createRouter({
-    routeTree,
-    context: { queryClient },
-    scrollRestoration: true,
-    // Lets Query own freshness; set caching defaults on the QueryClient, not the router.
-    defaultPreloadStaleTime: 0,
-  });
+export const routes: RouteObject[] = [
+  {
+    id: "root",
+    element: <RootLayout />,
+    errorElement: <RootErrorBoundary />,
+    children: [
+      { index: true, element: <Landing /> },
+      { path: "auth", element: <SignInPage /> },
+      { path: "signup", element: <SignUpPage /> },
+      {
+        id: AUTHENTICATED_ROUTE_ID,
+        loader: requireUser,
+        element: <AuthenticatedLayout />,
+        children: [{ path: "app", element: <AppDashboard /> }],
+      },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+];
 
-  return router;
-};
+export const router = createBrowserRouter(routes);

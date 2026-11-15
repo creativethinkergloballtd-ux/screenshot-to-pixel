@@ -1,27 +1,31 @@
-import { QueryClient } from "@tanstack/react-query";
-import { createRouter, rootRouteId } from "@tanstack/react-router";
+import { matchRoutes } from "react-router";
 import { describe, expect, it } from "vitest";
 
-import { routeTree } from "@/routeTree.gen";
+import { routes } from "@/router";
 
-// Match routes without running loaders or rendering: loaders may need a server or
-// network the test run lacks, and jsdom never loads the stylesheets React waits on.
-function leafRouteId(path: string) {
-  const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
-  return router.matchRoutes(path).at(-1)?.routeId;
+// Match routes without running loaders or rendering: loaders may need a network
+// the test run lacks.
+function leafRoute(path: string) {
+  return matchRoutes(routes, path)?.at(-1)?.route;
 }
 
 describe("App routing", () => {
   it("matches a page for / instead of falling back to not found", () => {
-    expect(leafRouteId("/")).not.toBe(rootRouteId);
+    expect(leafRoute("/")?.index).toBe(true);
   });
 
   it("serves the dashboard at /app behind the sign-in gate", () => {
-    expect(leafRouteId("/app")).toBe("/_authenticated/app");
+    const matches = matchRoutes(routes, "/app") ?? [];
+    expect(matches.at(-1)?.route.path).toBe("app");
+    expect(matches.some((m) => m.route.id === "_authenticated")).toBe(true);
   });
 
   it("has separate sign-in and sign-up pages", () => {
-    expect(leafRouteId("/auth")).toBe("/auth");
-    expect(leafRouteId("/signup")).toBe("/signup");
+    expect(leafRoute("/auth")?.path).toBe("auth");
+    expect(leafRoute("/signup")?.path).toBe("signup");
+  });
+
+  it("falls back to the not-found page for unknown paths", () => {
+    expect(leafRoute("/does-not-exist")?.path).toBe("*");
   });
 });

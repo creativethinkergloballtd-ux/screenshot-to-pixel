@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -42,7 +42,7 @@ export function AuthCard({ mode }: { mode: Mode }) {
   // Already signed in? Skip straight to the dashboard.
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/app", replace: true });
+      if (data.session) navigate("/app", { replace: true });
     });
   }, [navigate]);
 
@@ -55,7 +55,7 @@ export function AuthCard({ mode }: { mode: Mode }) {
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/app", replace: true });
+        navigate("/app", { replace: true });
       } else {
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -65,7 +65,7 @@ export function AuthCard({ mode }: { mode: Mode }) {
         if (error) throw error;
         if (data.session) {
           toast.success("Account created — 歡迎加入！");
-          navigate({ to: "/app", replace: true });
+          navigate("/app", { replace: true });
         } else {
           setNotice("請到信箱點擊確認連結 — Check your inbox to confirm your email.");
         }

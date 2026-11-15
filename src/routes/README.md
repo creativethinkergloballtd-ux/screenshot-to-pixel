@@ -1,21 +1,21 @@
 # Routes
 
-TanStack Start uses **file-based routing**. Every `.tsx` file in this directory
-defines a route. Do **not** create `src/pages/`, `src/routes/_app/index.tsx`, or
-`app/layout.tsx` — those are Next.js / Remix conventions. The only root layout
-is `src/routes/__root.tsx`.
-
-## Conventions
+This is a plain Vite + React SPA. Routing is client-side via **React Router**
+(`react-router` v7, data router). Routes are declared explicitly in
+`src/router.tsx` — files in this directory are just page components.
 
 | File | URL |
 | --- | --- |
 | `index.tsx` | `/` |
-| `about.tsx` | `/about` |
-| `users/index.tsx` | `/users` |
-| `users/$id.tsx` | `/users/:id` (dynamic — bare `$`, no curly braces) |
-| `posts/{-$category}.tsx` | `/posts/:category?` (optional segment) |
-| `files/$.tsx` | `/files/*` (splat — read via `_splat` param, never `*`) |
-| `_layout.tsx` | layout route (renders children via `<Outlet />`) |
-| `__root.tsx` | app shell — wraps every page; preserve `<Outlet />` |
+| `auth.tsx` | `/auth` (sign in) |
+| `signup.tsx` | `/signup` (sign up) |
+| `_authenticated/route.tsx` | layout + `requireUser` loader gate (redirects to `/auth`) |
+| `_authenticated/app.tsx` | `/app` (dashboard) |
+| `__root.tsx` | app shell, error boundary and 404 — preserve `<Outlet />` |
 
-`routeTree.gen.ts` is auto-generated. Don't edit it by hand.
+To add a page: create the component here, then add it to `routes` in
+`src/router.tsx`. Signed-in pages go under the `_authenticated` children.
+Per-page titles/meta use `usePageMeta()` from `@/hooks/usePageMeta`.
+
+Deep links work in production because `vercel.json` rewrites every path to
+`/index.html`.
