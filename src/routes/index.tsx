@@ -59,25 +59,25 @@ function Landing() {
           <div className="pointer-events-none absolute inset-0 bg-grid" />
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-20 pt-16 sm:px-6 sm:pt-24 lg:grid-cols-[1.1fr_1fr] lg:pb-28">
             <div className="text-center lg:text-left">
-              <FadeIn>
+              <div className="animate-rise">
                 <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary-glow">
                   <span className="size-1.5 rounded-full bg-success" /> 機票降價通知 · From Taipei
                 </span>
-              </FadeIn>
-              <FadeIn delay={80}>
+              </div>
+              <div className="animate-rise" style={{ animationDelay: "80ms" }}>
                 <h1 className="mt-6 text-5xl font-bold tracking-tight text-gradient sm:text-6xl lg:text-7xl">
                   Flight Price Notifier
                 </h1>
-              </FadeIn>
-              <FadeIn delay={160}>
+              </div>
+              <div className="animate-rise" style={{ animationDelay: "160ms" }}>
                 <p className="mt-6 text-xl font-medium text-foreground sm:text-2xl">
                   設定航線與目標價，機票降價就通知你
                 </p>
                 <p className="mx-auto mt-3 max-w-lg text-base text-muted-foreground lg:mx-0">
                   Set a route and a target price — we email you when the fare drops.
                 </p>
-              </FadeIn>
-              <FadeIn delay={240}>
+              </div>
+              <div className="animate-rise" style={{ animationDelay: "240ms" }}>
                 <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
                   <Button asChild variant="hero" size="xl">
                     <Link to="/signup">
@@ -88,11 +88,11 @@ function Landing() {
                     <Link to="/auth">Sign in / 登入</Link>
                   </Button>
                 </div>
-              </FadeIn>
+              </div>
             </div>
-            <FadeIn delay={200}>
+            <div className="animate-rise" style={{ animationDelay: "200ms" }}>
               <RouteAlertPreview />
-            </FadeIn>
+            </div>
           </div>
         </section>
 
