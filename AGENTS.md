@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Component files under `src/components/` are PascalCase (`SiteHeader.tsx`); shadcn `ui/` files keep their generated names. Why: one predictable naming scheme as the app grows.
+- Auth state comes from the single `SessionProvider` (root) — the only `onAuthStateChange` listener; read it with `useSession()`. Why: avoid competing listeners and stale headers.
+- Signed-in pages live under `src/routes/_authenticated/` (client-only `getUser()` gate redirecting to `/auth`). Why: session lives in browser storage, so the server cannot gate.
+- Sign-out goes through `useSignOut()` (cancel queries, clear cache, sign out, replace-navigate to `/auth`). Why: no leaked protected state on Back.
